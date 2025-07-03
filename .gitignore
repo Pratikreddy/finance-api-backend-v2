@@ -1,0 +1,24 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+venv/
+
+# Environment variables
+.env
+
+# User data and logs
+storage/chat/
+server.log
+
+# Temporary files
+full_requirements.txt
+
+# OS files
+.DS_Store

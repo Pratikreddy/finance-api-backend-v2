@@ -199,13 +199,9 @@ curl -X POST http://localhost:8000/chat/invoke \
 ```json
 {
   "output": {
-    "answer": "# RSI Trading Strategy\n\n## Overview\nThe RSI strategy...",
-    "code": "```pinescript\n//@version=5\nstrategy('RSI Strategy', overlay=true)\n...```",
-    "visualizations": {
-      "shadcn": ":::dual\n```jsx\nimport { Card } from '@/components/ui/card';\n...```\n:::",
-      "apexcharts": "```chart\n{\"type\": \"candlestick\", \"data\": {...}}\n```"
-    },
+    "answer": "# RSI Trading Strategy\n\n## Overview\nThe RSI strategy...\n\n## PineScript Implementation\n\n```pinescript\n//@version=5\nstrategy('RSI Strategy', overlay=true)\n...```\n\n## Visualization\n\n```jsx\nimport { Card } from '@/components/ui/card';\n...```",
     "chatsummary": "User requested RSI strategy. Provided implementation with entry/exit rules.",
+    "whatsapp_summary": "*Create a simple RSI strategy*\n\nKey Parameters:\n• RSI Length: 14\n• Overbought: 70\n• Oversold: 30\n• Stop Loss: 2%\n\nRSI strategy that identifies overbought/oversold conditions...\n\n_PineScript code included_",
     "conversation_id": "a45154af-859c-428b-8cb4-a743d70b05ef",
     "tokens_used": 3456,
     "cost": 0.0345
@@ -216,6 +212,8 @@ curl -X POST http://localhost:8000/chat/invoke \
   }
 }
 ```
+
+**Note**: The `code` and `visualizations` fields have been removed. All content (strategy explanation, PineScript code, and visualizations) is now integrated into the `answer` field. A new `whatsapp_summary` field provides a concise, mobile-friendly summary.
 
 #### Streaming Chat
 ```bash

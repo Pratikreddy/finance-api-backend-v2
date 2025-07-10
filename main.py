@@ -96,13 +96,9 @@ async def root():
             },
             "response": {
                 "output": {
-                    "answer": "# RSI Trading Strategy\n\n## Overview\nThe **Relative Strength Index (RSI)** is a momentum oscillator...",
-                    "code": "```pinescript\n//@version=5\nstrategy('RSI Strategy', overlay=true)...\n```",
-                    "visualizations": {
-                        "shadcn": ":::dual\n```jsx\nimport { Card } from '@/components/ui/card'...\n```\n:::",
-                        "apexcharts": "```chart\n{\"type\": \"line\", \"data\": {...}}\n```"
-                    },
+                    "answer": "# RSI Trading Strategy\n\n## Overview\nThe **Relative Strength Index (RSI)** is a momentum oscillator...\n\n## PineScript Implementation\n\n```pinescript\n//@version=5\nstrategy('RSI Strategy', overlay=true)...\n```\n\n## Visualization\n\n```jsx\nimport { Card } from '@/components/ui/card'...\n```",
                     "chatsummary": "User requested RSI strategy with visualizations",
+                    "whatsapp_summary": "*RSI Trading Strategy*\n\nKey Parameters:\n• RSI Length: 14\n• Overbought: 70\n• Oversold: 30\n\nStrategy uses RSI to identify overbought/oversold conditions...\n\n_Full implementation included_",
                     "conversation_id": "uuid-of-conversation",
                     "tokens_used": 3456,
                     "cost": 0.0345

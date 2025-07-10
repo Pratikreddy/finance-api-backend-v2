@@ -74,6 +74,35 @@ curl -X POST http://localhost:8000/chat/invoke \
   }'
 ```
 
+### Sample Response
+
+```json
+{
+  "output": {
+    "answer": "# RSI Strategy Explanation\n\n## Overview\nThe RSI strategy uses the Relative Strength Index...\n\n## PineScript Implementation\n\n```pinescript\n//@version=5\nstrategy(\"RSI Strategy\", overlay=true)\n...\n```\n\n## Visualization Component\n\n```jsx\nimport { Card } from '@/components/ui/card';\n...\n```",
+    "chatsummary": "User asked: Create RSI strategy. Provided PineScript strategy with implementation.",
+    "whatsapp_summary": "*Create a PineScript RSI strategy*\n\nKey Parameters:\n• RSI Length: 14\n• Overbought Level: 70\n• Oversold Level: 30\n• Stop Loss: 2%\n\nThis strategy uses RSI to identify...\n\n_PineScript code included in full response_",
+    "conversation_id": "cb47e119-ff4b-40a4-afde-9fbda876acab",
+    "tokens_used": 4827,
+    "cost": 0.042405
+  },
+  "metadata": {
+    "run_id": "",
+    "feedback_tokens": []
+  }
+}
+```
+
+### Key Changes in Response Format
+
+1. **Removed Keys**: `code` and `visualizations` fields have been removed
+2. **Integrated Content**: All content (strategy, code, visualizations) is now in the `answer` field
+3. **WhatsApp Summary**: New field that provides a concise, mobile-friendly summary of the response
+   - Shows the user's query
+   - Lists key parameters or main points
+   - Provides a brief description
+   - Perfect for WhatsApp message previews
+
 ## Architecture
 
 - **FastAPI**: Web framework

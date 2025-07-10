@@ -171,13 +171,9 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
 ```json
 {
   "output": {
-    "answer": "# Markdown Strategy Explanation\n\n## Overview\nDetailed explanation...",
-    "code": "```pinescript\n//@version=5\nstrategy(...)\n```",
-    "visualizations": {
-      "shadcn": ":::dual\n```jsx\nimport { Card } from '@/components/ui/card';\n...\n```\n:::",
-      "apexcharts": "```chart\n{\"type\": \"candlestick\", \"data\": {...}}\n```"
-    },
+    "answer": "# Markdown Strategy Explanation\n\n## Overview\nDetailed explanation...\n\n## PineScript Implementation\n\n```pinescript\n//@version=5\nstrategy(...)\n```\n\n## Visualization\n\n```jsx\nimport { Card } from '@/components/ui/card';\n...\n```",
     "chatsummary": "User requested X. Provided Y with Z.",
+    "whatsapp_summary": "*User Query*\n\nKey Parameters:\n• Parameter 1\n• Parameter 2\n\nBrief description of what was generated...\n\n_Full details in main response_",
     "conversation_id": "uuid-of-conversation",
     "tokens_used": 3456,
     "cost": 0.0345
@@ -209,13 +205,9 @@ AZURE_OPENAI_API_VERSION=2024-02-15-preview
         "tokens": 3456,
         "cost": 0.0345,
         "full_response": {
-          "answer": "Complete markdown answer",
-          "code": "Complete PineScript code",
-          "visualizations": {
-            "shadcn": "Complete shadcn component",
-            "apexcharts": "Complete chart config"
-          },
-          "chatsummary": "Summary text"
+          "answer": "Complete markdown answer with integrated code and visualizations",
+          "chatsummary": "Summary text",
+          "whatsapp_summary": "WhatsApp-friendly summary"
         }
       }
     }
@@ -280,7 +272,8 @@ The service uses LangGraph's modern agent architecture:
 - **Storage ≠ State**: File storage is for conversation history, NOT for maintaining state between requests
 - **Azure OpenAI Dependency**: Service requires valid Azure OpenAI credentials with tool calling support
 - **Python 3.13+**: Uses latest Python features and type hints
-- **Visualization Object**: Response includes `visualizations` as object with `shadcn` and `apexcharts` keys
+- **Integrated Response**: All content (explanation, code, visualizations) now in single `answer` field
+- **WhatsApp Summary**: New `whatsapp_summary` field provides mobile-friendly conversation preview
 - **Markdown Everything**: All text fields use markdown formatting for rich UI rendering
 - **Code Blocks**: Specific language tags for PineScript (`pinescript`), React (`jsx`), and charts (`chart`)
 - **LangGraph Migration**: See `LANGGRAPH_MIGRATION.md` for detailed migration documentation
@@ -303,11 +296,12 @@ The service uses LangGraph's modern agent architecture:
 - Context building from stored conversation summaries
 - Preserves stateless architecture - storage is NOT state
 
-### Visualization Format Update
-- Changed from markdown string to object with two keys
-- `shadcn`: React components with shadcn/ui
-- `apexcharts`: Chart configurations for candlesticks/indicators
-- Both keys always present (can be null)
+### Response Format Simplification (July 10, 2025)
+- Removed `code` and `visualizations` fields from response
+- All content now integrated into single `answer` field with proper markdown sections
+- Added `whatsapp_summary` field for mobile-friendly conversation previews
+- WhatsApp summaries show actual content instead of generic placeholders
+- Maintains full backward compatibility for content structure
 
 ### Performance Metrics
 - **Average Token Usage**: ~3,400 tokens for complex strategies

@@ -23,19 +23,4 @@
       "feedback_tokens": []
     }
   },
-  "notes": {
-    "description": "This is a real response from the API showing a PineScript tool call",
-    "key_features_demonstrated": [
-      "No separate 'code' or 'visualizations' fields",
-      "All content integrated into 'answer' field",
-      "PineScript code included in answer with proper formatting",
-      "React component visualization included",
-      "Chart configuration included",
-      "WhatsApp summary with actual content and parameters",
-      "Token usage and cost tracking",
-      "Conversation ID for thread management"
-    ],
-    "tool_called": "generate_pinescript",
-    "response_time": "~3-5 seconds"
-  }
 }

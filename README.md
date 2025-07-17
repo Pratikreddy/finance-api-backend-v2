@@ -5,6 +5,7 @@ A sophisticated FastAPI-based trading strategy consultation service powered by L
 ## Features
 
 - **LangGraph-Powered Agent**: Modern agent architecture for intelligent trading strategy consultation
+- **Real-time Web Search**: Integrated Exa search for current market data, earnings reports, and financial news
 - **PineScript Code Generation**: Automated generation of TradingView PineScript v5 code
 - **Interactive Visualizations**: Dual visualization support with shadcn/ui components and ApexCharts
 - **Conversation Persistence**: UUID-based file storage for conversation history
@@ -62,15 +63,27 @@ See [API_README.md](API_README.md) for comprehensive API documentation including
 - Request/response formats
 - End-to-end workflow examples
 
-## Quick Example
+## Quick Examples
 
+### Trading Strategy Generation
 ```bash
-# Create a new conversation
+# Create a new conversation with strategy request
 curl -X POST http://localhost:8000/chat/invoke \
   -H "Content-Type: application/json" \
   -H "x-user-uuid: your-user-id" \
   -d '{
     "query": "Create a simple RSI strategy for day trading"
+  }'
+```
+
+### Real-time Market Search
+```bash
+# Search for current market data and news
+curl -X POST http://localhost:8000/chat/invoke \
+  -H "Content-Type: application/json" \
+  -H "x-user-uuid: your-user-id" \
+  -d '{
+    "query": "What are the latest earnings results for HDFC Bank?"
   }'
 ```
 

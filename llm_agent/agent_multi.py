@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from llm_agent.prompts_multi import SIMPLE_PROMPT
-from llm_agent.tools_multi import generate_pinescript
+from llm_agent.tools_multi import generate_pinescript, exa_search, exa_find_similar
 
 # ─────────── CONFIG ───────────
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
@@ -39,35 +39,41 @@ system_prompt_content = SIMPLE_PROMPT.messages[0].prompt.template
 
 # Create a custom prompt that works with LangGraph's tool calling
 # We need to tell it to use tools, not return JSON directly
-tool_calling_prompt = """You are an expert trading strategy consultant who helps users design and implement trading strategies.
+tool_calling_prompt = """You are an expert trading and financial markets consultant who helps users with market analysis, trading strategies, and financial research.
 
-When answering questions about trading strategies:
+You have access to the following tools:
 
-1. ALWAYS provide a text-only explanation without any code. Focus on:
-   - Strategy concept and how it works
-   - Market conditions where it's effective
-   - Key indicators or patterns involved
-   - Risk management considerations
-   - Entry and exit rules
-   - Advantages and limitations
+1. **exa_search**: Search the web for current financial news, market analysis, earnings reports, and other financial information.
+2. **exa_find_similar**: Find similar articles or content to a given URL.
+3. **generate_pinescript**: Generate PineScript code for trading strategies.
 
-2. If the user needs PineScript code, ALWAYS use the generate_pinescript tool:
-   - Call the tool with a clear description
-   - The tool will return the code separately
-   - DO NOT include any code in your explanation
+When answering questions:
 
-3. Your response should be a clear, comprehensive explanation in plain text or markdown.
-   DO NOT include PineScript code blocks in your response - let the tool handle that.
+1. For market analysis, news, or research questions:
+   - Use exa_search to find current information
+   - Provide comprehensive analysis based on the search results
+   - Include relevant data points, trends, and insights
+
+2. For trading strategy questions:
+   - Provide a text-only explanation first
+   - Focus on strategy concept, market conditions, indicators, risk management
+   - If user needs PineScript code, use the generate_pinescript tool
+
+3. Your response should be clear, data-driven, and actionable.
+   - Use markdown formatting for better readability
+   - Cite sources when using search results
+   - Provide balanced analysis with both opportunities and risks
 
 IMPORTANT: 
-- Use the generate_pinescript tool for ANY PineScript code requests
-- Keep your explanation separate from the code
-- Focus on strategy explanation, not implementation details"""
+- Use exa_search for ANY current market data or news requests
+- Use generate_pinescript for ANY PineScript code requests
+- Keep explanations separate from code
+- Focus on providing valuable insights based on current data"""
 
 # Create LangGraph agent with tool-friendly prompt
 agent = create_react_agent(
     model=llm,
-    tools=[generate_pinescript],
+    tools=[generate_pinescript, exa_search, exa_find_similar],
     prompt=tool_calling_prompt
 )
 
@@ -113,14 +119,27 @@ def run_pinescript_agent(
     
     # Build the JSON response based on tool outputs
     if tool_messages:
-        # Tool was called - extract the PineScript output
-        tool_output = json.loads(tool_messages[-1].content) if tool_messages else {}
-        
         # Get the final assistant message that explains the strategy
         final_message = assistant_messages[-1].content
         
-        # Build the integrated answer with code and visualizations
-        integrated_answer = final_message + "\n\n---\n\n"
+        # Check if this is a PineScript tool call (returns JSON) or other tools
+        last_tool_content = tool_messages[-1].content if tool_messages else ""
+        tool_output = {}
+        
+        try:
+            # Try to parse as JSON (for PineScript tool)
+            tool_output = json.loads(last_tool_content)
+        except (json.JSONDecodeError, TypeError):
+            # Not JSON - this is from Exa or other tools
+            # The assistant message will contain the analysis
+            pass
+        
+        # Build the integrated answer
+        integrated_answer = final_message
+        
+        # Only add code sections if we have PineScript output
+        if tool_output.get('pinescript_code'):
+            integrated_answer += "\n\n---\n\n"
         
         # Add PineScript code if available
         if tool_output.get('pinescript_code'):

@@ -26,7 +26,11 @@ app.add_middleware(
 # Create chat service instance
 chat_service = ChatService()
 
-# Main chat endpoint that uses headers ONLY
+# ──────────────────────────────────────────────────────────────────────────────
+# MAIN CHAT ENDPOINT
+# ──────────────────────────────────────────────────────────────────────────────
+
+
 @app.post("/chat/invoke")
 async def chat_with_header(
     request: Dict[str, Any],
@@ -47,7 +51,10 @@ async def chat_with_header(
     
     return {"output": response, "metadata": {"run_id": "", "feedback_tokens": []}}
 
-# Health check
+# ──────────────────────────────────────────────────────────────────────────────
+# HEALTH CHECK
+# ──────────────────────────────────────────────────────────────────────────────
+
 @app.get("/health")
 async def health_check():
     return {
@@ -66,7 +73,10 @@ async def health_check():
         ]
     }
 
-# Root endpoint
+# ──────────────────────────────────────────────────────────────────────────────
+# ROOT ENDPOINT
+# ──────────────────────────────────────────────────────────────────────────────
+
 @app.get("/")
 async def root():
     return {
@@ -111,7 +121,11 @@ async def root():
         }
     }
 
-# Thread management routes
+
+# ──────────────────────────────────────────────────────────────────────────────
+# THREAD MANAGEMENT ROUTES
+# ──────────────────────────────────────────────────────────────────────────────
+
 @app.post("/threads/new")
 async def create_thread(
     request: Dict[str, Any],

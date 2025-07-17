@@ -20,5 +20,9 @@ server.log
 # Temporary files
 full_requirements.txt
 
+# Test outputs
+test_*.py
+exa_test_results.json
+
 # OS files
 .DS_Store

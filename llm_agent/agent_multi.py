@@ -81,23 +81,25 @@ def run_pinescript_agent(
     
     
     # Try to parse the response as JSON
+    # First check if the response is wrapped in markdown code blocks
+    json_content = final_response
+    if "```json" in final_response:
+        # Extract JSON from markdown code block
+        import re
+        json_match = re.search(r'```json\s*(.*?)\s*```', final_response, re.DOTALL)
+        if json_match:
+            json_content = json_match.group(1)
+    
     try:
-        parsed = json.loads(final_response)
+        parsed = json.loads(json_content)
         
-        # Ensure all required fields exist
+        # The LLM should have provided all fields, but ensure they exist
         if "answer" not in parsed:
             parsed["answer"] = final_response
         
-        # Ensure whatsapp_summary exists
         if "whatsapp_summary" not in parsed:
             parsed["whatsapp_summary"] = f"*{user_input}*\n\nSee full response for details."
             
-        # Clean up the answer text - replace escape sequences properly for Markdown
-        if isinstance(parsed.get("answer"), str):
-            # Replace \n with actual newlines for Markdown
-            parsed["answer"] = parsed["answer"].replace("\\n", "\n").replace("\\t", "  ").strip()
-            
-        # Ensure chatsummary exists
         if "chatsummary" not in parsed:
             parsed["chatsummary"] = f"User asked: {user_input}"
         
@@ -106,7 +108,7 @@ def run_pinescript_agent(
     except json.JSONDecodeError:
         # If it's not valid JSON, create proper structure from the response
         response = {
-            "answer": final_response.replace("\\n", "\n").replace("\\t", "  ").strip(),
+            "answer": final_response,
             "chatsummary": f"User asked: {user_input}",
             "whatsapp_summary": f"*{user_input}*\n\nSee full response for details."
         }
